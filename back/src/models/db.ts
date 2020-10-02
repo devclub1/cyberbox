@@ -1,9 +1,8 @@
-import 'reflect-metadata';
-import { ConnectionOptions, createConnection, getConnectionOptions } from 'typeorm';
+import Container from 'typedi';
+import { ConnectionOptions, getConnectionOptions, createConnection, useContainer } from 'typeorm';
 
-const dbConnection = async () => {
+export default async function dbConnection() {
+    useContainer(Container);
     const connectionOptions: ConnectionOptions = await getConnectionOptions();
-    await createConnection(connectionOptions);
+    return await createConnection(connectionOptions);
 }
-
-export default dbConnection;
