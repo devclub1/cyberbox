@@ -4,15 +4,9 @@
         "esModuleInterop": true,
         "target": "ES6",
         "noImplicitAny": true,
-        "moduleResolution": "Node",
+        "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist",
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*"
-            ]
-        },
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
     },

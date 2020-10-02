@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from './utils/security';
-import { dbConnection } from './models/db';
-import * as config from './properties';
+import dbConnection from './models/db';
+import config from './properties';
 
 const app = express();
 
@@ -19,14 +19,14 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
-    res.render('index', {buttonSpan: 'Sign in', url: '/auth/google'})
+    res.render('index', { buttonSpan: 'Sign in', url: '/auth/google' })
 })
 
 app.get('/hello', (req, res) => {
     res.send('Hello world!');
 });
 
-app.listen(config.default.PORT, () => {
+app.listen(config.PORT, () => {
     // tslint:disable-next-line:no-console
-    console.log(`Server started at http://localhost:${config.default.PORT}`);
+    console.log(`Server started at http://localhost:${config.PORT}`);
 });

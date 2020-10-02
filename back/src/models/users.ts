@@ -30,5 +30,10 @@ export class User {
 
     @OneToMany(type => Note, note => note.user)
     notes: Note[];
-    
+
+    constructor(name: string, email: string) {
+        this.name = name;
+        this.email = email;
+    }
+
 }
