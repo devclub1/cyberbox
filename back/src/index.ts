@@ -1,16 +1,32 @@
 import express from 'express';
-import { dbConnection } from './models/db'
+import passport from './utils/security';
+import { dbConnection } from './models/db';
+import * as config from './properties';
 
 const app = express();
-const port = 8080;
 
 dbConnection();
 
+app.use(passport.initialize());
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/hello');
+});
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'pug');
+
 app.get('/', (req, res) => {
+    res.render('index', {buttonSpan: 'Sign in', url: '/auth/google'})
+})
+
+app.get('/hello', (req, res) => {
     res.send('Hello world!');
 });
 
-app.listen(port, () => {
+app.listen(config.default.PORT, () => {
     // tslint:disable-next-line:no-console
-    console.log(`Server started at http://localhost:${port}`);
+    console.log(`Server started at http://localhost:${config.default.PORT}`);
 });

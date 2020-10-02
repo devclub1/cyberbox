@@ -9,9 +9,9 @@ export const dbConnection = async () => {
         type: 'mysql',
         host: 'localhost',
         port: 3306,
-        username: 'db-user',
-        password: 'db-password',
-        database: 'db-name',
+        username: 'root',
+        password: '',
+        database: 'cyberbox2',
         entities: [
             __dirname + '/*.js'
         ],

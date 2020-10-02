@@ -17,10 +17,9 @@ export class User {
     })
     email: string;
 
-    @Column()
-    token: string;
-
-    @Column()
+    @Column({
+        default: false
+    })
     isAdmin: boolean;
 
     @OneToMany(type => File, file => file.user)
@@ -31,5 +30,5 @@ export class User {
 
     @OneToMany(type => Note, note => note.user)
     notes: Note[];
-
+    
 }
