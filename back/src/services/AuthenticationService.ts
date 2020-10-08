@@ -9,14 +9,15 @@ export default class AuthenticationService {
     }
 
     private formatUserData(profile: any): any {
-        // validate profile.firstname, profile.lastname, profile.email
+
+        // validate profile.name profile.email
         return {
             email: profile.email,
-            name: `${profile.firstname} ${profile.lastname}`
+            name: profile.name
         }
     }
 
-    public async gerOrCreateUser(profile: any) {
+    public async getOrCreateUser(profile: any) {
         let user = await this.userRepository.findOne({ email: profile.email });
 
         if (!user) {

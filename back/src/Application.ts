@@ -18,16 +18,16 @@ export class Application {
 
         this.instance.get('/auth/google', PassportConfig.getPassport().authenticate('google', { scope: ['profile', 'email'] }));
         this.instance.get('/auth/google/callback', PassportConfig.getPassport().authenticate('google', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-            res.redirect('/hello');
+            res.redirect('/');
         });
 
-        this.instance.set('views', __dirname + '/views');
-        this.instance.set('view engine', 'pug');
+        this.instance.get('/auth/github', PassportConfig.getPassport().authenticate('github'));
+        this.instance.get('/auth/github/callback', PassportConfig.getPassport().authenticate('github', { failureRedirect: '/login' }), (req: Request, res: Response) => {
+            // Successful authentication, redirect home.
+            res.redirect('/');
+        });
 
         this.instance.get('/', (req: Request, res: Response) => {
-            res.render('index', { buttonSpan: 'Sign in', url: '/auth/google' })
-        })
-        this.instance.get('/hello', (req: Request, res: Response) => {
             res.send('Hello world!');
         });
 
