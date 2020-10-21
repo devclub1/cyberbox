@@ -1,5 +1,7 @@
 import 'reflect-metadata';
+import Container from 'typedi';
 import { Application } from './Application';
 
-const app = new Application();
+const app = Container.get(Application);
+
 app.start();

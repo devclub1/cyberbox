@@ -2,19 +2,32 @@ import express, { NextFunction, Request, Response } from 'express';
 import PassportConfig from "./config/PassportConfig";
 import config from './properties';
 import dbConnection from './models/db';
+import { Logger } from './config/Logger';
+import morgan from 'morgan';
+import { Inject } from 'typedi';
+import { exit } from 'process';
 
 export class Application {
-    private instance: any;
+    private instance: express.Application;
+
+    @Inject()
+    private logger: Logger;
 
     constructor() {
         this.instance = express();
     }
 
-    public async start() {
+    public start(): void {
         // tslint:disable-next-line: no-unused-expression
-        await dbConnection() || this.throwAppError();
+        dbConnection()
+            .catch((error) => {
+                // replace with customized error instance
+                this.handleError(error);
+                exit(-1);
+            });
 
         this.instance.use(PassportConfig.initialize());
+        this.instance.use(morgan('combined', this.logger.getMorganOptions()));
 
         this.instance.get('/auth/google', PassportConfig.getPassport().authenticate('google', { scope: ['profile', 'email'] }));
         this.instance.get('/auth/google/callback', PassportConfig.getPassport().authenticate('google', { failureRedirect: '/login' }), (req: Request, res: Response) => {
@@ -35,13 +48,15 @@ export class Application {
             res.status(500).send({ message: "A nasty error occurred" });
         });
 
+        this.instance.use(this.handleError);
+
         this.instance.listen(config.PORT, () => {
             // tslint:disable-next-line:no-console
             console.log(`Server started at http://localhost:${config.PORT}`);
-        });
+        })
     }
 
-    throwAppError() {
-        throw new Error("an error happened");
+    private handleError(error: Error, req?: Request, res?: Response, next?: NextFunction): void {
+        this.logger.writeError(error.message, error.stack);
     }
 }
