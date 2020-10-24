@@ -11,6 +11,6 @@
         "experimentalDecorators": true,
     },
     "include": [
-        "src/**/*"
+        "src/**/*", "src/middlewares/.ts"
     ]
 }

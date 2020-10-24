@@ -16,13 +16,15 @@ export default class Passport {
         return this.instance;
     }
 
-    public initialize(): any {
+    public initialize(prefix: string): any {
         this.instance = passportType;
-        this.configure();
+
+        this.configure(prefix);
+
         return this.instance.initialize();
     }
 
-    private configure(): void {
+    private configure(prefix: string): void {
         this.instance.serializeUser((user: any, done: any) => {
             done(null, user);
         });
@@ -34,7 +36,7 @@ export default class Passport {
         this.instance.use(new OAuth2Strategy({
             clientID: config.GOOGLE_CLIENT_ID,
             clientSecret: config.GOOGLE_SECRET,
-            callbackURL: '/auth/google/callback',
+            callbackURL: prefix + '/google/callback',
         }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
             this.passportCallbackHandler(accessToken, refreshToken, profile, done)
         }));
@@ -42,14 +44,14 @@ export default class Passport {
         this.instance.use(new Strategy({
             clientID: config.GITHUB_CLIENT_ID,
             clientSecret: config.GITHUB_CLIENT_SECRET,
-            callbackURL: '/auth/github/callback',
+            callbackURL: prefix + '/github/callback',
             scope: ['user:email'],
         }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
             this.passportCallbackHandler(accessToken, refreshToken, profile, done)
         }));
     }
 
-    private async passportCallbackHandler(accessToken: any, refreshToken: any, profile: any, done: any) {
+    private async passportCallbackHandler(_accessToken: any, _refreshToken: any, profile: any, done: any) {
         const user = await this.authenticationService.getOrCreateUser({
             email: profile._json.email || profile.emails[0].value,
             name: profile._json.name || (profile._json.first_name || profile._json.given_name + ' ' + profile._json.last_name || profile._json.family_name)

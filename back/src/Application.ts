@@ -1,9 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express';
-import PassportConfig from "./configurations/Passport";
+import Container, { Inject } from 'typedi';
 import config from './properties';
-import { Logger } from './configurations/Logger';
 import morgan from 'morgan';
-import { Inject } from 'typedi';
+
+import Logger from './configurations/Logger';
+import { useContainer, useExpressServer } from "routing-controllers";
+import { WelcomeController } from './controllers/WelcomeController';
+import { AuthenticationController } from './controllers/AuthenticationController';
+import Passport from './configurations/Passport';
+import session from 'client-sessions';
 
 export class Application {
     private instance: express.Application;
@@ -12,40 +17,44 @@ export class Application {
     private logger: Logger;
 
     @Inject()
-    private passport: PassportConfig;
+    private passport: Passport;
 
     constructor() {
-        this.instance = express();
+        useContainer(Container);
     }
 
     public async start() {
-        this.instance.use(this.passport.initialize());
+        this.instance = express();
+
+        this.instance.use(session(
+            {
+                cookieName: 'session',
+                secret: config.COOKIE_SECRET,
+                // example
+                duration: 24 * 60 * 60 * 1000,
+            }
+        ));
+
+        this.instance.use(this.passport.initialize(config.AUTHENTICATION_ROUTE));
+
         this.instance.use(morgan('combined', this.logger.getMorganOptions()));
 
-        this.instance.get('/auth/google', this.passport.getPassport().authenticate('google', { scope: ['profile', 'email'] }));
-        this.instance.get('/auth/google/callback', this.passport.getPassport().authenticate('google', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-            res.redirect('/');
+        this.instance.use((error: Error, _req: Request, _res: Response, next: NextFunction) => {
+            this.logger.writeError(error.message, error.stack);
+            next();
         });
 
-        this.instance.get('/auth/github', this.passport.getPassport().authenticate('github'));
-        this.instance.get('/auth/github/callback', this.passport.getPassport().authenticate('github', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-            // Successful authentication, redirect home.
-            res.redirect('/');
+        useExpressServer(this.instance, {
+            routePrefix: "/api",
+            controllers: [
+                WelcomeController,
+                AuthenticationController
+            ]
         });
-
-        this.instance.get('/', (req: Request, res: Response) => {
-            res.send('Hello world!');
-        });
-
-        this.instance.use(this.handleError);
 
         this.instance.listen(config.PORT, () => {
             // tslint:disable-next-line:no-console
             console.log(`Server started at http://localhost:${config.PORT}`);
         })
-    }
-
-    private handleError(error: Error, req?: Request, res?: Response, next?: NextFunction): void {
-        this.logger.writeError(error.message, error.stack);
     }
 }
