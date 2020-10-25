@@ -8,6 +8,7 @@ import { Action, useContainer, useExpressServer } from "routing-controllers";
 import Passport from './configurations/Passport';
 import session from 'client-sessions';
 import AuthenticationService from './services/AuthenticationService';
+import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
 
 export class Application {
     private instance: express.Application;
@@ -51,14 +52,13 @@ export class Application {
             controllers: [
                 __dirname + '/controllers/*.js'
             ],
+            middlewares: [
+                ErrorHandlerMiddleware
+            ],
+            defaultErrorHandler: false,
             currentUserChecker: async (action: Action) => {
                 return await this.authenticationService.getUserById(action.request.session.user.id);
             }
-        });
-
-        this.instance.use((error: Error, _req: Request, _res: Response, next: NextFunction) => {
-            this.logger.writeError(error.message, error.stack);
-            next();
         });
 
         this.instance.listen(config.PORT, () => {

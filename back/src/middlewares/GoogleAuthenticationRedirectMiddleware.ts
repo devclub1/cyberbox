@@ -1,6 +1,7 @@
 import { ExpressMiddlewareInterface } from "routing-controllers";
 import { Inject } from "typedi";
 import Passport from "../configurations/Passport";
+import BusinessError from "../types/BusinessError";
 
 export default class GoogleAuthenticationRedirectMiddleware implements ExpressMiddlewareInterface {
     @Inject()
@@ -10,7 +11,7 @@ export default class GoogleAuthenticationRedirectMiddleware implements ExpressMi
         return this.passport.getPassport().authenticate('google', { failureRedirect: '/login' },
             (err: any, user: any, info: any) => {
                 if (err || !user) {
-                    return next(new Error(info));
+                    return next(new BusinessError(info, 401, false));
                 }
 
                 request.user = user;
