@@ -16,15 +16,15 @@ export default class Passport {
         return this.instance;
     }
 
-    public initialize(prefix: string): any {
+    public initialize(): any {
         this.instance = passportType;
 
-        this.configure(prefix);
+        this.configure();
 
         return this.instance.initialize();
     }
 
-    private configure(prefix: string): void {
+    private configure(): void {
         this.instance.serializeUser((user: any, done: any) => {
             done(null, user);
         });
@@ -36,7 +36,7 @@ export default class Passport {
         this.instance.use(new OAuth2Strategy({
             clientID: config.GOOGLE_CLIENT_ID,
             clientSecret: config.GOOGLE_SECRET,
-            callbackURL: prefix + '/google/callback',
+            callbackURL: config.AUTHENTICATION_ROUTE + config.GOOGLE_CALLBACK_URL,
         }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
             this.passportCallbackHandler(accessToken, refreshToken, profile, done)
         }));
@@ -44,7 +44,7 @@ export default class Passport {
         this.instance.use(new Strategy({
             clientID: config.GITHUB_CLIENT_ID,
             clientSecret: config.GITHUB_CLIENT_SECRET,
-            callbackURL: prefix + '/github/callback',
+            callbackURL: config.AUTHENTICATION_ROUTE + config.GITHUB_CALLBACK_URL,
             scope: ['user:email'],
         }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
             this.passportCallbackHandler(accessToken, refreshToken, profile, done)
