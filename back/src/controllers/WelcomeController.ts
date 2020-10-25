@@ -1,6 +1,6 @@
-import { Get, JsonController, Req, Res, Session, UseBefore } from 'routing-controllers';
+import { CurrentUser, Get, JsonController, UseBefore } from 'routing-controllers';
 import { Authenticated } from '../middlewares/AuthenticatedMiddleware';
-import { Request } from 'express';
+import { User } from '../models/User';
 
 @JsonController()
 export class WelcomeController {
@@ -11,8 +11,9 @@ export class WelcomeController {
 
     @Get("/protected")
     @UseBefore(Authenticated)
-    protectedWelcome(@Req() req: Request, @Session() session: any) {
+    protectedWelcome(@CurrentUser() user: User) {
         // tslint:disable-next-line:no-console
+        console.log(user.email);
         return { message: "hit the protected route" };
     }
 

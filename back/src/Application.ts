@@ -4,11 +4,14 @@ import config from './properties';
 import morgan from 'morgan';
 
 import Logger from './configurations/Logger';
-import { useContainer, useExpressServer } from "routing-controllers";
+import { Action, useContainer, useExpressServer } from "routing-controllers";
 import { WelcomeController } from './controllers/WelcomeController';
 import { AuthenticationController } from './controllers/AuthenticationController';
 import Passport from './configurations/Passport';
 import session from 'client-sessions';
+import { UserRepository } from './repositories/UserRepository';
+import { InjectRepository } from 'typeorm-typedi-extensions';
+import AuthenticationService from './services/AuthenticationService';
 
 export class Application {
     private instance: express.Application;
@@ -18,6 +21,9 @@ export class Application {
 
     @Inject()
     private passport: Passport;
+
+    @Inject()
+    private authenticationService: AuthenticationService;
 
     constructor() {
         useContainer(Container);
@@ -49,7 +55,10 @@ export class Application {
             controllers: [
                 WelcomeController,
                 AuthenticationController
-            ]
+            ],
+            currentUserChecker: async (action: Action) => {
+                return await this.authenticationService.getUserById(action.request.session.user.id);
+            }
         });
 
         this.instance.listen(config.PORT, () => {
