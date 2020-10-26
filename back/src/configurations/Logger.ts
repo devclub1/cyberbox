@@ -18,6 +18,10 @@ export default class Logger {
         });
     }
 
+    public writeInfo(message: string) {
+        this.logger.info(message);
+    }
+
     public writeError(message: string, stacktrace?: string) {
         this.logger.error(message + " - " + stacktrace);
     }
@@ -26,7 +30,7 @@ export default class Logger {
         return {
             stream: {
                 write: (message: string) => {
-                    this.logger.debug(message.trim());
+                    this.logger.info(`ACCESS: ${message.trim()}`);
                 }
             }
         }
@@ -44,7 +48,7 @@ export default class Logger {
 
     private initializeAccessTransport(): winston.transport {
         return new winston.transports.DailyRotateFile({
-            level: 'debug',
+            level: 'info',
             filename: '%DATE%.log',
             dirname: 'logs/access',
             datePattern: 'YYYY-MM-DD',
@@ -56,7 +60,7 @@ export default class Logger {
 
     private initializeErrorTransport(): winston.transport {
         return new winston.transports.DailyRotateFile({
-            level: 'warn',
+            level: 'error',
             filename: '%DATE%.log',
             dirname: 'logs/error',
             datePattern: 'YYYY-MM-DD',
@@ -67,7 +71,12 @@ export default class Logger {
     }
 
     private initializeConsoleTransport(): winston.transport {
-        return new winston.transports.Console({ level: 'debug' });
+        return new winston.transports.Console(
+            {
+                level: 'info',
+                format: winston.format.combine(winston.format.colorize(), winston.format.align(), winston.format.simple())
+            }
+        );
     }
 
     private removeErrors = winston.format((info, opts) => {

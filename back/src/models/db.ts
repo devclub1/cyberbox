@@ -1,5 +1,7 @@
 import Container from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
+import Logger from '../configurations/Logger';
+import TypeOrmLogger from '../configurations/TypeOrmLogger';
 import config from '../properties';
 
 export default async function establishDbConnection() {
@@ -13,7 +15,7 @@ export default async function establishDbConnection() {
         username: config.DB_USER,
         password: config.DB_PASSWORD,
         synchronize: true,
-        logging: true,
+        logger: new TypeOrmLogger(Container.get(Logger)),
         entities: [
             __dirname + "/*.js"
         ]
