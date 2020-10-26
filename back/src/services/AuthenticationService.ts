@@ -5,8 +5,8 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 @Service()
 export default class AuthenticationService {
 
-    constructor(@InjectRepository() private userRepository: UserRepository) {
-    }
+    @InjectRepository()
+    private userRepository: UserRepository;
 
     private formatUserData(profile: any): any {
         // validate profile.name profile.email
@@ -24,5 +24,9 @@ export default class AuthenticationService {
         }
 
         return { id: user.id };
+    }
+
+    public async getUserById(id: number) {
+        return this.userRepository.findOne(id);
     }
 }

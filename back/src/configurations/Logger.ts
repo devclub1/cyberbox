@@ -5,7 +5,7 @@ import { Options, } from 'morgan';
 import { IncomingMessage, ServerResponse } from 'http';
 
 @Service()
-export class Logger {
+export default class Logger {
     private transports: winston.transport[];
     private logger: winston.Logger;
 

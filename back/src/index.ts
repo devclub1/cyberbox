@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+
 import Container from 'typedi';
 import establishDbConnection from './models/db';
 import { Application } from './Application';
@@ -12,6 +13,5 @@ establishDbConnection()
     .catch((error) => {
         // tslint:disable-next-line:no-console
         console.log(error.message);
-
         exit(-1);
     })
