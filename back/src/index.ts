@@ -1,9 +1,14 @@
 import 'reflect-metadata';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import Container from 'typedi';
-import establishDbConnection from './models/db';
 import { Application } from './Application';
 import { exit } from 'process';
+
+import establishDbConnection from './models/db';
+import Logger from './configurations/Logger';
 
 establishDbConnection()
     .then(() => {
@@ -11,7 +16,7 @@ establishDbConnection()
         app.start();
     })
     .catch((error) => {
-        // tslint:disable-next-line:no-console
-        console.log(error.message);
+        const logger = Container.get(Logger);
+        logger.writeError(`${error.message} - ${error.stack}`);
         exit(-1);
-    })
+    });
