@@ -2,18 +2,18 @@ import Container from 'typedi';
 import { createConnection, useContainer } from 'typeorm';
 import Logger from '../configurations/Logger';
 import TypeOrmLogger from '../configurations/TypeOrmLogger';
-import config from '../properties';
+import properties from '../properties';
 
 export default async function establishDbConnection() {
     useContainer(Container);
 
     return await createConnection({
         type: 'mysql',
-        port: config.DB_PORT,
-        host: config.DB_HOST,
-        database: config.DB_NAME,
-        username: config.DB_USER,
-        password: config.DB_PASSWORD,
+        port: parseInt(properties.DB_PORT, 10),
+        host: properties.DB_HOST,
+        database: properties.DB_NAME,
+        username: properties.DB_USER,
+        password: properties.DB_PASSWORD,
         synchronize: true,
         logger: new TypeOrmLogger(Container.get(Logger)),
         entities: [

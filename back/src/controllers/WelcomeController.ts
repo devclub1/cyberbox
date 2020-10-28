@@ -1,5 +1,5 @@
 import { CurrentUser, Get, Header, JsonController, UseBefore } from 'routing-controllers';
-import { Authenticated } from '../middlewares/AuthenticatedMiddleware';
+import AuthenticatedMiddleware from '../middlewares/AuthenticatedMiddleware';
 import { User } from '../models/User';
 
 @JsonController()
@@ -11,7 +11,7 @@ export class WelcomeController {
 
     @Get("/protected")
     @Header("Cache-Control", "none")
-    @UseBefore(Authenticated)
+    @UseBefore(AuthenticatedMiddleware)
     protectedWelcome(@CurrentUser() user: User) {
         // tslint:disable-next-line:no-console
         console.log(user.email);

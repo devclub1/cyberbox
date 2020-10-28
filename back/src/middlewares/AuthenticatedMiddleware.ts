@@ -2,7 +2,7 @@ import { ExpressMiddlewareInterface } from "routing-controllers";
 import { Request, Response } from 'express';
 import BusinessError from "../types/BusinessError";
 
-export class Authenticated implements ExpressMiddlewareInterface {
+export default class AuthenticatedMiddleware implements ExpressMiddlewareInterface {
     use(req: Request, res: Response, next?: (err?: any) => any,) {
         const user = req.session.user;
 

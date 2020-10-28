@@ -1,14 +1,15 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import Container, { Inject } from 'typedi';
-import config from './properties';
+import properties from './properties';
 import morgan from 'morgan';
 
 import Logger from './configurations/Logger';
 import { Action, useContainer, useExpressServer } from "routing-controllers";
 import Passport from './configurations/Passport';
-import session from 'client-sessions';
+import sessions from 'client-sessions';
 import AuthenticationService from './services/AuthenticationService';
 import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
+import AuthenticatedMiddleware from './middlewares/AuthenticatedMiddleware';
 
 export class Application {
     private instance: express.Application;
@@ -29,16 +30,16 @@ export class Application {
     public async start() {
         this.instance = express();
 
-        this.instance.use(session(
+        this.instance.use(sessions(
             {
                 cookieName: 'session',
-                secret: config.COOKIE_SECRET,
-                duration: config.COOKIE_DURATION,
-                activeDuration: config.COOKIE_ACTIVE_DURATION,
+                secret: properties.COOKIE_SECRET,
+                duration: parseInt(properties.COOKIE_DURATION, 10),
+                activeDuration: parseInt(properties.COOKIE_ACTIVE_DURATION, 10),
                 cookie: {
                     path: '/api',
                     httpOnly: true,
-                    secure: config.COOKIE_SECURE_SETTING
+                    secure: properties.COOKIE_SECURE_SETTING
                 }
             }
         ));
@@ -53,7 +54,8 @@ export class Application {
                 __dirname + '/controllers/*.js'
             ],
             middlewares: [
-                ErrorHandlerMiddleware
+                ErrorHandlerMiddleware,
+                AuthenticatedMiddleware
             ],
             defaultErrorHandler: false,
             currentUserChecker: async (action: Action) => {
@@ -61,9 +63,8 @@ export class Application {
             }
         });
 
-        this.instance.listen(config.PORT, () => {
-            // tslint:disable-next-line:no-console
-            console.log(`Server started at http://localhost:${config.PORT}`);
-        })
+        this.instance.listen(properties.PORT, () => {
+            this.logger.writeInfo(`Server started at http://localhost:${properties.PORT}`);
+        });
     }
 }
