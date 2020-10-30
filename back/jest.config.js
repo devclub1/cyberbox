@@ -9,6 +9,6 @@ module.exports = {
         "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "collectCoverageFrom": [
-        "**/*.{js,jsx,ts,tsx}",
+        "src/**/*.ts"
     ]
 }

@@ -11,8 +11,6 @@
         "experimentalDecorators": true,
     },
     "include": [
-        "src/**/*",
-        "src/middlewares/.ts",
-        "test/MockService.test.ts"
+        "src/**/*"
     ]
 }

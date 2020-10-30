@@ -6,7 +6,7 @@ import { GithubAuthenticationMiddleware } from "../middlewares/GithubAuthenticat
 import GithubAuthenticationRedirectMiddleware from "../middlewares/GithubAuthenticationRedirectMiddleware";
 
 @Controller("/authentication")
-export class AuthenticationController {
+export class AuthController {
 
     @Get("/google")
     @UseBefore(GoogleAuthenticationMiddleware)
