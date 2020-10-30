@@ -11,7 +11,7 @@
     "start": "node .",
     "test": "jest",
     "test-watch": "jest --watchAll",
-    "coverage": "jest --collectCoverage --watchAll"
+    "coverage": "jest --collectCoverage && node ./tools/lcov2badge.js"
   },
   "author": "devclub1",
   "license": "MIT",
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "jest": "^26.6.1",
+    "lcov2badge": "^0.1.2",
     "ts-jest": "^26.4.3",
     "tslint": "^6.1.3"
   }
