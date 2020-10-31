@@ -27,7 +27,7 @@ export class Application {
         useContainer(Container);
     }
 
-    public async start() {
+    public async initialize() {
         this.instance = express();
 
         this.instance.use(sessions(
@@ -62,6 +62,12 @@ export class Application {
                 return await this.authService.getUserById(action.request.session.user.id);
             }
         });
+    }
+
+    public async start() {
+        if (!this.instance) {
+            await this.initialize();
+        }
 
         this.instance.listen(properties.PORT, () => {
             this.logger.writeInfo(`Server started at http://localhost:${properties.PORT}`);
