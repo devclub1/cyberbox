@@ -7,7 +7,7 @@ import Logger from './configurations/Logger';
 import { Action, useContainer, useExpressServer } from "routing-controllers";
 import Passport from './configurations/Passport';
 import sessions from 'client-sessions';
-import AuthenticationService from './services/AuthenticationService';
+import AuthService from './services/AuthService';
 import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
 import AuthenticatedMiddleware from './middlewares/AuthenticatedMiddleware';
 
@@ -21,13 +21,13 @@ export class Application {
     private passport: Passport;
 
     @Inject()
-    private authenticationService: AuthenticationService;
+    private authService: AuthService;
 
     constructor() {
         useContainer(Container);
     }
 
-    public async start() {
+    public async initialize() {
         this.instance = express();
 
         this.instance.use(sessions(
@@ -59,9 +59,15 @@ export class Application {
             ],
             defaultErrorHandler: false,
             currentUserChecker: async (action: Action) => {
-                return await this.authenticationService.getUserById(action.request.session.user.id);
+                return await this.authService.getUserById(action.request.session.user.id);
             }
         });
+    }
+
+    public async start() {
+        if (!this.instance) {
+            await this.initialize();
+        }
 
         this.instance.listen(properties.PORT, () => {
             this.logger.writeInfo(`Server started at http://localhost:${properties.PORT}`);

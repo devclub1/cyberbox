@@ -1,5 +1,7 @@
 # cyberbox - back
 
+![Coverage](./tools/coverage.svg)
+
 ### To avoid installing MySQL, you can use Docker 
 
 ```docker
@@ -14,3 +16,9 @@ DB_NAME=cyberbox
 DB_USER=cyberbox
 DB_PASSWORD=cyberbox
 ```
+
+### CLI commands
+* npm start - start the application
+* test - run all the tests
+* test-watch - run all the tests with verbose output
+* coverage - create coverage report & update *coverage shield* in README.md  

@@ -1,7 +1,7 @@
 import { OAuth2Strategy } from 'passport-google-oauth';
 import { Strategy } from 'passport-github2';
 import properties from '../properties';
-import AuthenticationService from '../services/AuthenticationService';
+import AuthService from '../services/AuthService';
 import passportType, { PassportStatic } from 'passport';
 import { Inject, Service } from 'typedi';
 
@@ -10,7 +10,7 @@ export default class Passport {
     private instance: PassportStatic;
 
     @Inject()
-    private authenticationService: AuthenticationService;
+    private authService: AuthService;
 
     public getPassport(): PassportStatic {
         return this.instance;
@@ -52,7 +52,7 @@ export default class Passport {
     }
 
     private async passportCallbackHandler(_accessToken: any, _refreshToken: any, profile: any, done: any) {
-        const user = await this.authenticationService.getOrCreateUser({
+        const user = await this.authService.getOrCreateUser({
             email: profile._json.email || profile.emails[0].value,
             name: profile._json.name || (profile._json.first_name || profile._json.given_name + ' ' + profile._json.last_name || profile._json.family_name)
         });

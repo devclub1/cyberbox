@@ -1,12 +1,10 @@
 import { Service } from 'typedi';
-import { UserRepository } from '../repositories/UserRepository';
+import UserRepository from '../repositories/UserRepository';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 @Service()
-export default class AuthenticationService {
-
-    @InjectRepository()
-    private userRepository: UserRepository;
+export default class AuthService {
+    constructor(@InjectRepository() private userRepository: UserRepository) { }
 
     private formatUserData(profile: any): any {
         // validate profile.name profile.email
