@@ -7,10 +7,10 @@ import Container from 'typedi';
 import { Application } from './Application';
 import { exit } from 'process';
 
-import establishDbConnection from './models/db';
 import Logger from './configurations/Logger';
+import DatabaseConnection from './models/DatabaseConnection';
 
-establishDbConnection()
+DatabaseConnection.getConnection()
     .then(() => {
         const app = Container.get(Application);
         app.start();
