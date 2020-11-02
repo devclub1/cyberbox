@@ -58,5 +58,5 @@ export default class Passport {
         });
 
         done(null, user);
-    };
+    }
 }
