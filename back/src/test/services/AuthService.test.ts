@@ -1,15 +1,16 @@
 import AuthService from '../../services/AuthService';
 import { GenericMock, MockedMember } from '../GenericMock';
 
-const mockedId = 1;
+const mockedUuid = "a0b12345-1234-1a23-123a-123a4b5678c9";
 
 const mockedUser = {
-    id: 1
+    uuid: "a0b12345-1234-1a23-123a-123a4b5678c9"
 };
 
 const mockedProfile = {
     email: "test@test.com",
-    name: "Test"
+    firstName: "Test",
+    lastName: "Test"
 };
 
 const mocks = {
@@ -20,7 +21,7 @@ const mocks = {
         return null;
     })),
     save: MockedMember.generate("save", jest.fn(async (profile: any) => {
-        return { ...profile, id: mockedId }
+        return { ...profile, uuid: mockedUuid }
     }))
 };
 
@@ -39,10 +40,10 @@ describe("AuthService", () => {
     });
 
     test("getUserById - user found", async (done) => {
-        const result = await authService.getUserById(mockedId);
+        const result = await authService.getUserById(mockedUuid);
 
         expect(userRepositoryMock.instance.findOne).toHaveBeenCalledTimes(1);
-        expect(userRepositoryMock.instance.findOne).toHaveBeenLastCalledWith(mockedId);
+        expect(userRepositoryMock.instance.findOne).toHaveBeenLastCalledWith(mockedUuid);
 
         expect(result).toBe(mockedUser);
 
@@ -52,10 +53,10 @@ describe("AuthService", () => {
     test("getUserById - user not found", async (done) => {
         userRepositoryMock.updateInstance(mocks.findOneNotFound);
 
-        const result = await authService.getUserById(mockedId);
+        const result = await authService.getUserById(mockedUuid);
 
         expect(userRepositoryMock.instance.findOne).toHaveBeenCalledTimes(1);
-        expect(userRepositoryMock.instance.findOne).toHaveBeenLastCalledWith(mockedId);
+        expect(userRepositoryMock.instance.findOne).toHaveBeenLastCalledWith(mockedUuid);
 
         expect(result).toBe(null);
 
@@ -68,7 +69,7 @@ describe("AuthService", () => {
         expect(userRepositoryMock.instance.findOne).toHaveBeenCalledTimes(1);
         expect(userRepositoryMock.instance.findOne).toHaveBeenLastCalledWith({ email: mockedProfile.email });
 
-        expect(result.id).toBe(mockedId);
+        expect(result.uuid).toBe(mockedUuid);
 
         done();
     });
@@ -84,7 +85,7 @@ describe("AuthService", () => {
         expect(userRepositoryMock.instance.save).toHaveBeenCalledTimes(1);
         expect(userRepositoryMock.instance.save).toHaveBeenLastCalledWith(mockedProfile);
 
-        expect(result.id).toBe(mockedId);
+        expect(result.uuid).toBe(mockedUuid);
 
         done();
     });

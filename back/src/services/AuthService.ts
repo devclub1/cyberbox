@@ -10,7 +10,8 @@ export default class AuthService {
         // validate profile.name profile.email
         return {
             email: profile.email,
-            name: profile.name
+            firstName: profile.firstName,
+            lastName: profile.lastName
         }
     }
 
@@ -21,10 +22,10 @@ export default class AuthService {
             user = await this.userRepository.save(this.formatUserData(profile));
         }
 
-        return { id: user.id };
+        return { uuid: user.uuid };
     }
 
-    public async getUserById(id: number) {
-        return this.userRepository.findOne(id);
+    public async getUserById(uuid: string) {
+        return this.userRepository.findOne(uuid);
     }
 }

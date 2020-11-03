@@ -1,30 +1,58 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Group } from './Groups';
+import { Log } from './Logs';
+import { Permission } from './Permissions';
 import { User } from './User';
 
 @Entity('files')
 export class File {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    uuid: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 50 })
     name: string;
 
-    @Column()
-    isPublic: boolean;
+    @Column({ type: 'varchar', length: 200 })
+    description: string;
 
-    @Column()
-    idParent: number;
+    @Column({ type: 'varchar', length: 10 })
+    extension: string;
 
-    @Column()
-    isFolder: boolean;
-
-    @Column()
+    @Column({ type: 'varchar', length: 150 })
     path: string;
 
+    @Column()
+    encrypted: boolean;
+
+    @Column()
+    directory: boolean;
+
+    @Column({ type: 'varchar', length: 10 })
+    label: string;
+
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+    created: Date;
+
+    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
+    updated: Date;
+
+    @OneToMany(type => Permission, permission => permission.file)
+    permissions: Permission[];
+
+    @OneToMany(type => Log, log => log.file)
+    logs: Log[];
+
+    @OneToOne(type => File, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'parent_uuid' })
+    parent: File;
+
     @ManyToOne(type => User, user => user.files)
-    @JoinColumn({
-        name: 'user_id'
-    })
+    @JoinColumn({ name: 'user_uuid' })
     user: User;
+
+    @ManyToOne(type => Group, group => group.files)
+    @JoinColumn({ name: 'group_uuid' })
+    group: Group;
+
 }

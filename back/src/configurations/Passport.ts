@@ -52,9 +52,20 @@ export default class Passport {
     }
 
     private async passportCallbackHandler(_accessToken: any, _refreshToken: any, profile: any, done: any) {
-        const user = await this.authService.getOrCreateUser({
+
+        let name = [];
+        if(profile._json.name !== null){
+            name = profile._json.name.split(' ');
+        }
+
+        const user = await this.authService.getOrCreateUser(name.length > 0 ? {
             email: profile._json.email || profile.emails[0].value,
-            name: profile._json.name || (profile._json.first_name || profile._json.given_name + ' ' + profile._json.last_name || profile._json.family_name)
+            firstName: profile._json.given_name || (name.length > 1 ? name.slice(0, -1).join(' ') : profile._json.name),
+            lastName: profile._json.family_name || (name.length > 1 ? name.slice(-1).join('') : '')
+        } : {
+            email: profile.emails[0].value,
+            firstName: profile._json.login,
+            lastName: ''
         });
 
         done(null, user);
