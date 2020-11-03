@@ -15,7 +15,7 @@
         ```docker
         docker run --name cyberbox-db -p 3306:3306 -d axbg/cyberbox-db
         ```
-    2. Configure .env
+    2. Replace the values of the following fields in .env
         ```
         DB_HOST=localhost
         DB_PORT=3306
@@ -23,14 +23,15 @@
         DB_USER=cyberbox
         DB_PASSWORD=cyberbox
         ```
-    3. Run **npm start**
+    3. Fill the other fields (optional)
+    4. Run **npm start**
 #
 * Using Docker containers managed manually *(recommended during front-end integration)*
     1. Run the database as a Docker container
         ```docker
         docker run --name cyberbox-db -p 3306:3306 -d axbg/cyberbox-db
         ```
-    2. Configure .env with
+    2. Replace the values of the following fields in .env
         ```
         DB_HOST=host.docker.internal
         DB_PORT=3306
@@ -38,7 +39,17 @@
         DB_USER=cyberbox
         DB_PASSWORD=cyberbox
         ```
-    3. Run **docker run -d --env-file .\.env --name cbox -p 8080:8080 axbg/cyberbox-back**    
+    3. Fill the other fields (optional)
+    4. Run **docker run -d --env-file .\.env --name cbox -p 8080:8080 axbg/cyberbox-back**    
 #
 * Using Docker Compose *(recommended in DevOps pipelines)*
-    1. Run **docker-compose up**
+    1. Replace the values of the following fields in .env
+        ```
+        DB_HOST=db
+        DB_PORT=3306
+        DB_NAME=cyberbox
+        DB_USER=cyberbox
+        DB_PASSWORD=cyberbox
+        ```
+    2. Fill the other fields (optional)
+    3. Run **docker-compose up -d**
