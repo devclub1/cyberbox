@@ -1,24 +1,30 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CreateDateColumn, Entity, Generated, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { File } from './Files';
 import { User } from './User';
 
 @Entity('permissions')
 export class Permission {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    @Generated('uuid')
+    uuid: string;
 
-    @Column()
-    created: string;
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+    created: Date;
 
-    @OneToOne(type => User, { onDelete: 'CASCADE' })
-    @JoinColumn({
-        name: 'owner_id'
-    })
+    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
+    activeUntil: Date;
+
+    @ManyToOne(type => User, user => user.owners)
+    @JoinColumn({ name: 'owner_uuid'})
     owner: User;
 
-    @OneToOne(type => User, { onDelete: 'CASCADE' })
-    @JoinColumn({
-        name: 'friend_id'
-    })
-    friend: User;
+    @OneToOne(type => User, user => user.guests)
+    @JoinColumn({ name: 'guest_uuid' })
+    guest: User;
+
+    @ManyToOne(type => File, file => file.permissions)
+    @JoinColumn({ name: 'file_uuid' })
+    file: File;
+
 }

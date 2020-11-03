@@ -1,21 +1,21 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Generated, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
 
 @Entity('settings')
 export class Setting {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    uuid: string;
+
+    @Column({ type: 'varchar', length: 10 })
+    theme: string;
 
     @Column()
-    push: boolean;
+    limit: number;
 
-    @Column()
-    mail: boolean;
-
-    @OneToOne(type => User, { onDelete: 'CASCADE' })
+    @ManyToOne(type => User, user => user.settings)
     @JoinColumn({
-        name: 'user_id'
+        name: 'user_uuid'
     })
     user: User;
 

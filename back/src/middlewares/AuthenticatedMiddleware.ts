@@ -6,7 +6,7 @@ export default class AuthenticatedMiddleware implements ExpressMiddlewareInterfa
     use(req: Request, res: Response, next?: (err?: any) => any,) {
         const user = req.session.user;
 
-        if (user && typeof user.id === 'number') {
+        if (user && typeof user.uuid === 'string') {
             next();
         } else {
             next(new BusinessError("Invalid cookie", 401, false));
