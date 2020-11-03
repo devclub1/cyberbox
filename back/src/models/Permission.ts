@@ -1,5 +1,5 @@
 import { CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { File } from './Files';
+import { File } from './File';
 import { User } from './User';
 
 @Entity('permissions')

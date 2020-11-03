@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { File } from './Files';
+import { File } from './File';
 import { User } from './User';
 
 @Entity('logs')

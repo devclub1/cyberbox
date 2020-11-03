@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Group } from './Groups';
-import { Log } from './Logs';
-import { Permission } from './Permissions';
+import { Group } from './Group';
+import { Log } from './Log';
+import { Permission } from './Permission';
 import { User } from './User';
 
 @Entity('files')

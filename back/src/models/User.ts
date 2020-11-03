@@ -1,10 +1,10 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { File } from './Files';
-import { Log } from './Logs';
-import { Membership } from './Memberships';
-import { Permission } from './Permissions';
-import { Setting } from './Settings';
-import { Token } from './Tokens';
+import { File } from './File';
+import { Log } from './Log';
+import { Membership } from './Membership';
+import { Permission } from './Permission';
+import { Setting } from './Setting';
+import { Token } from './Token';
 
 @Entity('users')
 export class User {

@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { File } from './Files';
-import { Membership } from './Memberships';
+import { File } from './File';
+import { Membership } from './Membership';
 
 @Entity('groups')
 export class Group {

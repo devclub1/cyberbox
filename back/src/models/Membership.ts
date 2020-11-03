@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Group } from './Groups';
+import { Group } from './Group';
 import { User } from './User';
 
 @Entity('memberships')
