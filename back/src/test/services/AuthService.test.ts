@@ -1,10 +1,10 @@
 import AuthService from '../../services/AuthService';
 import { GenericMock, MockedMember } from '../GenericMock';
 
-const mockedUuid = "1";
+const mockedUuid = "a0b12345-1234-1a23-123a-123a4b5678c9";
 
 const mockedUser = {
-    uuid: "1"
+    uuid: "a0b12345-1234-1a23-123a-123a4b5678c9"
 };
 
 const mockedProfile = {
