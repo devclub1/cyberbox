@@ -4,7 +4,7 @@ import properties from './properties';
 import morgan from 'morgan';
 
 import Logger from './configurations/Logger';
-import { Action, useContainer, useExpressServer } from "routing-controllers";
+import { Action, useContainer, useExpressServer } from 'routing-controllers';
 import Passport from './configurations/Passport';
 import sessions from 'client-sessions';
 import AuthService from './services/AuthService';
@@ -49,7 +49,7 @@ export class Application {
         this.instance.use(morgan('combined', this.logger.getMorganOptions()));
 
         useExpressServer(this.instance, {
-            routePrefix: "/api",
+            routePrefix: '/api',
             controllers: [
                 __dirname + '/controllers/*.js'
             ],

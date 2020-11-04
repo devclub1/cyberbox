@@ -4,17 +4,17 @@ import { User } from '../models/User';
 
 @JsonController()
 export class WelcomeController {
-    @Get("/")
+    @Get('/')
     welcome() {
-        return { message: "Hello world" };
+        return { message: 'Hello world' };
     }
 
-    @Get("/protected")
-    @Header("Cache-Control", "none")
+    @Get('/protected')
+    @Header('Cache-Control', 'none')
     @UseBefore(AuthenticatedMiddleware)
     protectedWelcome(@CurrentUser() user: User) {
         // tslint:disable-next-line:no-console
         console.log(user.email);
-        return { message: "hit the protected route" };
+        return { message: 'hit the protected route' };
     }
 }

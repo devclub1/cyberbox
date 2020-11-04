@@ -1,7 +1,7 @@
-import { ExpressMiddlewareInterface } from "routing-controllers";
-import { Inject } from "typedi";
-import Passport from "../configurations/Passport";
-import BusinessError from "../types/BusinessError";
+import { ExpressMiddlewareInterface } from 'routing-controllers';
+import { Inject } from 'typedi';
+import Passport from '../configurations/Passport';
+import BusinessError from '../types/BusinessError';
 
 export default class GoogleAuthenticationRedirectMiddleware implements ExpressMiddlewareInterface {
     @Inject()
