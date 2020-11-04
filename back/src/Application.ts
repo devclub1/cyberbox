@@ -2,6 +2,8 @@ import express from 'express';
 import Container, { Inject } from 'typedi';
 import properties from './properties';
 import morgan from 'morgan';
+import swaggerUI from 'swagger-ui-express';
+import * as swaggerDocument from '../swagger.json';
 
 import Logger from './configurations/Logger';
 import { Action, useContainer, useExpressServer } from 'routing-controllers';
@@ -48,6 +50,8 @@ export class Application {
 
         this.instance.use(morgan('combined', this.logger.getMorganOptions()));
 
+        this.instance.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
         useExpressServer(this.instance, {
             routePrefix: '/api',
             controllers: [
@@ -62,6 +66,7 @@ export class Application {
                 return await this.authService.getUserById(action.request.session.user.id);
             }
         });
+
     }
 
     public async start() {
