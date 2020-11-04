@@ -37,10 +37,10 @@ export class User {
     logs: Log[];
 
     @OneToMany(type => Permission, permission => permission.owner)
-    owners: Permission[]
+    owners: Permission[];
 
     @OneToMany(type => Permission, permission => permission.guest)
-    guests: Permission[]
+    guests: Permission[];
 
     @OneToMany(type => Membership, membership => membership.user)
     memberships: Membership[];

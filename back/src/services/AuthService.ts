@@ -12,7 +12,7 @@ export default class AuthService {
             email: profile.email,
             firstName: profile.firstName,
             lastName: profile.lastName
-        }
+        };
     }
 
     public async getOrCreateUser(profile: any) {

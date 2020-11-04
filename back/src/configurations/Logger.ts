@@ -23,7 +23,7 @@ export default class Logger {
     }
 
     public writeError(message: string, stacktrace?: string) {
-        this.logger.error(message + " - " + stacktrace);
+        this.logger.error(message + ' - ' + stacktrace);
     }
 
     public getMorganOptions(): Options<IncomingMessage, ServerResponse> {
@@ -33,7 +33,7 @@ export default class Logger {
                     this.logger.info(`ACCESS: ${message.trim()}`);
                 }
             }
-        }
+        };
     }
 
     private initializeTransports(): void {

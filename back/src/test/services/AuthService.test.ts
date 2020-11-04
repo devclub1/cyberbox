@@ -1,31 +1,31 @@
 import AuthService from '../../services/AuthService';
 import { GenericMock, MockedMember } from '../GenericMock';
 
-const mockedUuid = "a0b12345-1234-1a23-123a-123a4b5678c9";
+const mockedUuid = 'a0b12345-1234-1a23-123a-123a4b5678c9';
 
 const mockedUser = {
-    uuid: "a0b12345-1234-1a23-123a-123a4b5678c9"
+    uuid: 'a0b12345-1234-1a23-123a-123a4b5678c9'
 };
 
 const mockedProfile = {
-    email: "test@test.com",
-    firstName: "Test",
-    lastName: "Test"
+    email: 'test@test.com',
+    firstName: 'Test',
+    lastName: 'Test'
 };
 
 const mocks = {
-    findOneFound: MockedMember.generate("findOne", jest.fn(async (profile: any) => {
-        return mockedUser
+    findOneFound: MockedMember.generate('findOne', jest.fn(async (profile: any) => {
+        return mockedUser;
     })),
-    findOneNotFound: MockedMember.generate("findOne", jest.fn(async (profile: any) => {
+    findOneNotFound: MockedMember.generate('findOne', jest.fn(async (profile: any) => {
         return null;
     })),
-    save: MockedMember.generate("save", jest.fn(async (profile: any) => {
-        return { ...profile, uuid: mockedUuid }
+    save: MockedMember.generate('save', jest.fn(async (profile: any) => {
+        return { ...profile, uuid: mockedUuid };
     }))
 };
 
-describe("AuthService", () => {
+describe('AuthService', () => {
     const userRepositoryMock: GenericMock = new GenericMock(
         mocks.findOneFound,
         mocks.save
@@ -39,7 +39,7 @@ describe("AuthService", () => {
         );
     });
 
-    test("getUserById - user found", async (done) => {
+    test('getUserById - user found', async (done) => {
         const result = await authService.getUserById(mockedUuid);
 
         expect(userRepositoryMock.instance.findOne).toHaveBeenCalledTimes(1);
@@ -50,7 +50,7 @@ describe("AuthService", () => {
         done();
     });
 
-    test("getUserById - user not found", async (done) => {
+    test('getUserById - user not found', async (done) => {
         userRepositoryMock.updateInstance(mocks.findOneNotFound);
 
         const result = await authService.getUserById(mockedUuid);
@@ -63,7 +63,7 @@ describe("AuthService", () => {
         done();
     });
 
-    test("getOrCreateUser - user found", async (done) => {
+    test('getOrCreateUser - user found', async (done) => {
         const result = await authService.getOrCreateUser(mockedProfile);
 
         expect(userRepositoryMock.instance.findOne).toHaveBeenCalledTimes(1);
@@ -74,7 +74,7 @@ describe("AuthService", () => {
         done();
     });
 
-    test("getOrCreateUser - creating user", async (done) => {
+    test('getOrCreateUser - creating user', async (done) => {
         userRepositoryMock.updateInstance(mocks.findOneNotFound);
 
         const result = await authService.getOrCreateUser(mockedProfile);

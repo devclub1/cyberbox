@@ -1,6 +1,6 @@
-import { ExpressMiddlewareInterface } from "routing-controllers";
-import { Inject } from "typedi";
-import Passport from "../configurations/Passport";
+import { ExpressMiddlewareInterface } from 'routing-controllers';
+import { Inject } from 'typedi';
+import Passport from '../configurations/Passport';
 
 export class GithubAuthenticationMiddleware implements ExpressMiddlewareInterface {
   @Inject()

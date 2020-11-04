@@ -1,9 +1,9 @@
-import { ExpressErrorMiddlewareInterface, Middleware } from "routing-controllers";
-import { Inject } from "typedi";
-import Logger from "../configurations/Logger";
-import BusinessError from "../types/BusinessError";
+import { ExpressErrorMiddlewareInterface, Middleware } from 'routing-controllers';
+import { Inject } from 'typedi';
+import Logger from '../configurations/Logger';
+import BusinessError from '../types/BusinessError';
 
-@Middleware({ type: "after" })
+@Middleware({ type: 'after' })
 export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
 
     @Inject()
@@ -15,13 +15,13 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
                 this.logger.writeError(error.code + ' - ' + error.message, error.stack);
             }
 
-            response.status(error.code)
+            response.status(error.code);
             response.send({ message: error.message });
         } else {
             this.logger.writeError(error.message, error.stack);
 
-            response.status(500)
-            response.send({ message: "An internal error happened - Try again" });
+            response.status(500);
+            response.send({ message: 'An internal error happened - Try again' });
         }
     }
 }

@@ -28,7 +28,7 @@ export default class DatabaseConnection {
             synchronize: true,
             logger: new TypeOrmLogger(Container.get(Logger)),
             entities: [
-                __dirname + "/*.js"
+                __dirname + '/*.js'
             ]
         });
     }

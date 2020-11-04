@@ -38,7 +38,7 @@ export default class Passport {
             clientSecret: properties.GOOGLE_SECRET,
             callbackURL: properties.AUTHENTICATION_ROUTE + properties.GOOGLE_CALLBACK_URL,
         }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
-            this.passportCallbackHandler(accessToken, refreshToken, profile, done)
+            this.passportCallbackHandler(accessToken, refreshToken, profile, done);
         }));
 
         this.instance.use(new Strategy({
@@ -47,7 +47,7 @@ export default class Passport {
             callbackURL: properties.AUTHENTICATION_ROUTE + properties.GITHUB_CALLBACK_URL,
             scope: ['user:email'],
         }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
-            this.passportCallbackHandler(accessToken, refreshToken, profile, done)
+            this.passportCallbackHandler(accessToken, refreshToken, profile, done);
         }));
     }
 
