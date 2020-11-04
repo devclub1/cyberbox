@@ -1,0 +1,9 @@
+openapi: "3.0.3"
+info:
+    version: "0.9.1",
+    title: "cyberbox-back",
+    description: "A secure & open-source storage ready to be deployed on your server",
+    license": 
+        name: "MIT",
+        url: "https://opensource.org/licenses/MIT"
+        
