@@ -1,7 +1,5 @@
 # cyberbox - back
 
-![Coverage](./tools/coverage.svg)
-
 ## Useful CLI commands
 * npm start - start the application
 * npm t - run all the tests

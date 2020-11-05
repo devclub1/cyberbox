@@ -20,5 +20,15 @@ pipeline {
         }
       }
     }
+    stage('Publish Reports') {
+      environment {
+        CODECOV_TOKEN = credentials('codecov_token')
+      }
+      steps {
+        dir(path: 'back') {
+          sh 'curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
+        }
+      }
+    }
   }
 }
