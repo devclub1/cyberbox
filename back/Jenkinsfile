@@ -1,0 +1,34 @@
+pipeline {
+  agent {
+    docker { image 'node:14' }
+  }
+  environment {
+    HOME = '.'
+  }
+  stages {
+    stage('Install') {
+      steps {
+        dir(path: 'back') {
+          sh 'npm install'
+        }
+      }
+    }
+    stage('Test') {
+      steps {
+        dir(path: 'back') {
+          sh 'npm run coverage'
+        }
+      }
+    }
+    stage('Publish Reports') {
+      environment {
+        CODECOV_TOKEN = credentials('codecov_token')
+      }
+      steps {
+        dir(path: 'back') {
+          sh 'curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
+        }
+      }
+    }
+  }
+}

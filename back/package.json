@@ -11,13 +11,13 @@
     "start": "node .",
     "test": "jest",
     "test-watch": "jest --watchAll",
-    "coverage": "jest --collectCoverage && node ./tools/lcov2badge.js"
+    "coverage": "jest --collectCoverage"
   },
   "author": "devclub1",
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prebuild & npm run coverage && git add ."
+      "pre-commit": "npm run prebuild && git add ."
     }
   },
   "dependencies": {
