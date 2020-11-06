@@ -1,9 +1,6 @@
 pipeline {
   agent {
-    docker { image 'node:14' }
-  }
-  environment {
-    HOME = '.'
+    label 'master'
   }
   stages {
     stage('Install') {
@@ -20,15 +17,53 @@ pipeline {
         }
       }
     }
-    stage('Publish Reports') {
-      environment {
-        CODECOV_TOKEN = credentials('codecov_token')
-      }
-      steps {
-        dir(path: 'back') {
-          sh 'curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
+    stage('Publish Results') {
+      parallel {
+        stage('Publish Reports') {
+          environment {
+            CODECOV_TOKEN = credentials('codecov_token')
+          }
+          steps {
+            dir(path: 'back') {
+              sh 'curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
+            }
+          }
+        }
+        stage('Create Docker Image') {
+          when {
+            branch 'ts'
+          }
+          environment {
+            DOCKER_IMAGE = ''
+            DOCKERHUB_CREDENTIALS = 'dockerhub_token'
+            REPOSITORY = 'axbg/cyberbox-back'
+          }
+          steps {
+            dir(path: 'back') {
+              script {
+                DOCKER_IMAGE = docker.build REPOSITORY + ':latest'
+                docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+                  DOCKER_IMAGE.push()
+                }
+              }
+            }
+          }
         }
       }
     }
+    stage('Cleanup') {
+      when {
+        branch 'ts'
+      }
+      environment {
+        REPOSITORY = 'axbg/cyberbox-back'
+      }
+      steps {
+        sh "docker rmi $REPOSITORY:latest" 
+      }
+    }
+  }
+  environment {
+    HOME = '.'
   }
 }
