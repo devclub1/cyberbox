@@ -2,8 +2,6 @@ import express from 'express';
 import Container, { Inject } from 'typedi';
 import properties from './properties';
 import morgan from 'morgan';
-import swaggerUI from 'swagger-ui-express';
-import YAML from 'yamljs';
 
 import Logger from './configurations/Logger';
 import { Action, useContainer, useExpressServer } from 'routing-controllers';
@@ -49,9 +47,6 @@ export class Application {
         this.instance.use(this.passport.initialize());
 
         this.instance.use(morgan('combined', this.logger.getMorganOptions()));
-
-        const swaggerDocument = YAML.load('../swagger.yaml');
-        this.instance.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
         useExpressServer(this.instance, {
             routePrefix: '/api',

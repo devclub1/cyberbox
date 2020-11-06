@@ -3,7 +3,7 @@
   "version": "0.9.1",
   "repository": "https://github.com/devclub1/cyberbox",
   "description": "A secure & open-source storage ready to be deployed on your server",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
