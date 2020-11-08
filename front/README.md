@@ -5,4 +5,4 @@
 ## Useful CLI commands
 * npm start - start the application
 * npm t - run all the tests
-* npm run coverage - run tests & create coverage report 
+* npm run coverage - run tests & create coverage report
