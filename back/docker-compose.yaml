@@ -8,9 +8,9 @@ services:
     ports: 
         - "3306:3306"
     networks:
-      - cyberbox-network
+      - app-network
 
-  cyberbox-db:
+  cbox:
     build: .
     container_name: cbox
     ports:
@@ -20,10 +20,10 @@ services:
     hostname: cbox
     restart: always
     networks:
-      - cyberbox-network
+      - app-network
     depends_on:
       - db
 
 networks:
-  cyberbox-network:
+  app-network:
     driver: bridge
