@@ -6,6 +6,8 @@ import morgan from 'morgan';
 import Logger from './configurations/Logger';
 import { Action, useContainer, useExpressServer } from 'routing-controllers';
 import Passport from './configurations/Passport';
+import swaggerUI from 'swagger-ui-express';
+import yamljs from 'yamljs';
 import sessions from 'client-sessions';
 import AuthService from './services/AuthService';
 import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
@@ -47,6 +49,8 @@ export class Application {
         this.instance.use(this.passport.initialize());
 
         this.instance.use(morgan('combined', this.logger.getMorganOptions()));
+
+        this.instance.use('/docs', swaggerUI.serve, swaggerUI.setup(yamljs.load('swagger.yaml')));
 
         useExpressServer(this.instance, {
             routePrefix: '/api',
