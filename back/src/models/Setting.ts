@@ -13,10 +13,8 @@ export class Setting {
     @Column()
     limit: number;
 
-    @ManyToOne(type => User, user => user.settings)
-    @JoinColumn({
-        name: 'user_uuid'
-    })
+    @ManyToOne(type => User, user => user.settings, {onDelete: 'CASCADE'})
+    @JoinColumn({ name: 'user_uuid' })
     user: User;
 
 }

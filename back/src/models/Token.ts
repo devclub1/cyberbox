@@ -19,7 +19,7 @@ export class Token {
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
     activeUntil: Date;
 
-    @ManyToOne(type => User, user => user.tokens)
+    @ManyToOne(type => User, user => user.tokens, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'user_uuid' })
     user: User;
 }

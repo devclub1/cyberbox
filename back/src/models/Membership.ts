@@ -17,11 +17,11 @@ export class Membership {
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
     availableUntil: Date;
 
-    @ManyToOne(type => User, user => user.memberships)
+    @ManyToOne(type => User, user => user.memberships, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'user_uuid' })
     user: User;
 
-    @ManyToOne(type => Group, group => group.memberships)
+    @ManyToOne(type => Group, group => group.memberships, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'group_uuid' })
     group: Group;
 
