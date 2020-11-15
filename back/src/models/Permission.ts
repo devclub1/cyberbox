@@ -14,7 +14,7 @@ export class Permission {
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)' })
     activeUntil: Date;
 
-    @ManyToOne(type => User, user => user.owners)
+    @ManyToOne(type => User, user => user.owners, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'owner_uuid'})
     owner: User;
 
@@ -22,7 +22,7 @@ export class Permission {
     @JoinColumn({ name: 'guest_uuid' })
     guest: User;
 
-    @ManyToOne(type => File, file => file.permissions)
+    @ManyToOne(type => File, file => file.permissions, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'file_uuid' })
     file: File;
 
