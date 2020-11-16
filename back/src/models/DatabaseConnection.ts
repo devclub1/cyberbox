@@ -29,7 +29,11 @@ export default class DatabaseConnection {
             logger: new TypeOrmLogger(Container.get(Logger)),
             entities: [
                 __dirname + '/*.js'
-            ]
+            ],
+            migrations: [
+                __dirname + '/migrations/*.js'
+            ],
+            migrationsRun: true
         });
     }
 }
