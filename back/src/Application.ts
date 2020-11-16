@@ -1,17 +1,16 @@
-import express from 'express';
-import Container, { Inject } from 'typedi';
 import properties from './properties';
-import morgan from 'morgan';
 
-import Logger from './configurations/Logger';
-import { Action, useContainer, useExpressServer } from 'routing-controllers';
-import Passport from './configurations/Passport';
-import swaggerUI from 'swagger-ui-express';
-import yamljs from 'yamljs';
+import morgan from 'morgan';
+import express from 'express';
 import sessions from 'client-sessions';
+import Container, { Inject } from 'typedi';
+import Logger from './configurations/Logger';
+import Passport from './configurations/Passport';
 import AuthService from './services/AuthService';
-import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
 import AuthenticatedMiddleware from './middlewares/AuthenticatedMiddleware';
+import { OpenAPI } from './configurations/OpenAPI';
+import { Action, useContainer, useExpressServer } from 'routing-controllers';
+import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
 
 export class Application {
     private instance: express.Application;
@@ -50,8 +49,6 @@ export class Application {
 
         this.instance.use(morgan('combined', this.logger.getMorganOptions()));
 
-        this.instance.use('/docs', swaggerUI.serve, swaggerUI.setup(yamljs.load('swagger.yaml')));
-
         useExpressServer(this.instance, {
             routePrefix: '/api',
             controllers: [
@@ -66,6 +63,9 @@ export class Application {
                 return await this.authService.getUserById(action.request.session.user.id);
             }
         });
+
+        // tslint:disable-next-line: no-unused-expression
+        !properties.PROD && OpenAPI.configure(this.instance);
     }
 
     public async start() {

@@ -1,3 +1,5 @@
+process.env.NODE_ENV = !!+process.env.PROD ? 'production' : 'development';
+
 export default {
   PROD: !!+process.env.PROD,
   PORT: process.env.PORT,
