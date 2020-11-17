@@ -3,10 +3,12 @@
 [![codecov](https://codecov.io/gh/devclub1/cyberbox/branch/ts/graph/badge.svg?token=5KKATHGI8S)](https://codecov.io/gh/devclub1/cyberbox)
 
 ## Useful CLI commands
-* npm start - start the application
+* npm run build - build the application
+* npm start - build & start the application
 * npm t - run all the tests
 * npm run test-watch - run all the tests with verbose output
-* npm run coverage - create coverage report & update *coverage shield* in README.md  
+* npm run coverage - create coverage report & update *coverage shield* in README.md 
+* npm run migrate MIGRATION_NAME_ - create a database migration 
 
 ## Deployment
 ### You can deploy the app in 3 ways:

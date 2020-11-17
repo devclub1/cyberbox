@@ -12,7 +12,7 @@
     "test": "jest",
     "test-watch": "jest --watchAll",
     "coverage": "jest --collectCoverage",
-    "generate-migration": "npx typeorm migration:generate -n"
+    "migrate": "typeorm migration:generate -n"
   },
   "author": "devclub1",
   "license": "MIT",
