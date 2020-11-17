@@ -47,11 +47,11 @@ export class File {
     @JoinColumn({ name: 'parent_uuid' })
     parent: File;
 
-    @ManyToOne(type => User, user => user.files)
+    @ManyToOne(type => User, user => user.files, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'user_uuid' })
     user: User;
 
-    @ManyToOne(type => Group, group => group.files)
+    @ManyToOne(type => Group, group => group.files, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'group_uuid' })
     group: Group;
 

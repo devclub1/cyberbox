@@ -11,7 +11,8 @@
     "start": "node .",
     "test": "jest",
     "test-watch": "jest --watchAll",
-    "coverage": "jest --collectCoverage"
+    "coverage": "jest --collectCoverage",
+    "migrate": "tsc && typeorm migration:generate -n"
   },
   "author": "devclub1",
   "license": "MIT",

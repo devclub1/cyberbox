@@ -2,11 +2,11 @@ export default {
   PROD: !!+process.env.PROD,
   PORT: process.env.PORT,
 
-  DB_HOST: process.env.DB_HOST || 'localhost',
-  DB_PORT: process.env.DB_PORT || '3306',
-  DB_NAME: process.env.DB_NAME,
-  DB_USER: process.env.DB_USER,
-  DB_PASSWORD: process.env.DB_PASSWORD,
+  DB_HOST: process.env.TYPEORM_HOST || 'localhost',
+  DB_PORT: process.env.TYPEORM_PORT || '3306',
+  DB_NAME: process.env.TYPEORM_DATABASE,
+  DB_USER: process.env.TYPEORM_USERNAME,
+  DB_PASSWORD: process.env.TYPEORM_PASSWORD,
 
   COOKIE_SECRET: process.env.COOKIE_SECRET,
   COOKIE_DURATION: process.env.COOKIE_DURATION || '86400000',

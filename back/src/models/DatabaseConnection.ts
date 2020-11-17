@@ -25,10 +25,14 @@ export default class DatabaseConnection {
             database: properties.DB_NAME,
             username: properties.DB_USER,
             password: properties.DB_PASSWORD,
-            synchronize: true,
+            synchronize: false,
+            migrationsRun: true,
             logger: new TypeOrmLogger(Container.get(Logger)),
             entities: [
                 __dirname + '/*.js'
+            ],
+            migrations: [
+                __dirname + '/migrations/*.js'
             ]
         });
     }
