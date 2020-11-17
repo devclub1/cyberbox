@@ -3,6 +3,7 @@ import winston from 'winston';
 import 'winston-daily-rotate-file';
 import { Options, } from 'morgan';
 import { IncomingMessage, ServerResponse } from 'http';
+import properties from '../properties';
 
 @Service()
 export default class Logger {
@@ -42,8 +43,8 @@ export default class Logger {
             this.initializeErrorTransport(),
         ];
 
-        // disable in PROD after implementing .env configurations
-        this.transports.push(this.initializeConsoleTransport());
+        // tslint:disable-next-line: no-unused-expression
+        !properties.PROD && this.transports.push(this.initializeConsoleTransport());
     }
 
     private initializeAccessTransport(): winston.transport {
