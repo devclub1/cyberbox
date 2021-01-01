@@ -1,38 +1,53 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { File } from './files';
-import { Note } from './notes';
-import { Reminder } from './reminders';
+import { File } from './File';
+import { Log } from './Log';
+import { Membership } from './Membership';
+import { Permission } from './Permission';
+import { Setting } from './Setting';
+import { Token } from './Token';
 
 @Entity('users')
 export class User {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    uuid: string;
 
-    @Column()
-    name: string;
-
-    @Column({
-        unique: true
-    })
+    @Column({ type: 'varchar', length: 50, unique: true })
     email: string;
 
-    @Column({
-        default: false
-    })
-    isAdmin: boolean;
+    @Column({ type: 'varchar', length: 50 })
+    firstName: string;
+
+    @Column({ type: 'varchar', length: 25 })
+    lastName: string;
+
+    @Column({ type: 'text', nullable: true })
+    vault: string;
+
+    @OneToMany(type => Setting, setting => setting.user)
+    settings: Setting[];
 
     @OneToMany(type => File, file => file.user)
     files: File[];
 
-    @OneToMany(type => Reminder, reminder => reminder.user)
-    reminders: Reminder[];
+    @OneToMany(type => Token, token => token.user)
+    tokens: Token[];
 
-    @OneToMany(type => Note, note => note.user)
-    notes: Note[];
+    @OneToMany(type => Log, log => log.user)
+    logs: Log[];
 
-    constructor(name: string, email: string) {
-        this.name = name;
+    @OneToMany(type => Permission, permission => permission.owner)
+    owners: Permission[];
+
+    @OneToMany(type => Permission, permission => permission.guest)
+    guests: Permission[];
+
+    @OneToMany(type => Membership, membership => membership.user)
+    memberships: Membership[];
+
+    constructor(firstName: string, lastName: string, email: string) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 

@@ -1,47 +1,80 @@
-import express, { NextFunction, Request, Response } from 'express';
-import PassportConfig from "./config/PassportConfig";
-import config from './properties';
-import dbConnection from './models/db';
+import properties from './properties';
+
+import morgan from 'morgan';
+import express from 'express';
+import sessions from 'client-sessions';
+import Container, { Inject } from 'typedi';
+import Logger from './configurations/Logger';
+import Passport from './configurations/Passport';
+import AuthService from './services/AuthService';
+import AuthenticatedMiddleware from './middlewares/AuthenticatedMiddleware';
+import { OpenAPI } from './configurations/OpenAPI';
+import { Action, useContainer, useExpressServer } from 'routing-controllers';
+import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware';
 
 export class Application {
-    private instance: any;
+    private instance: express.Application;
+
+    @Inject()
+    private logger: Logger;
+
+    @Inject()
+    private passport: Passport;
+
+    @Inject()
+    private authService: AuthService;
 
     constructor() {
+        useContainer(Container);
+    }
+
+    public async initialize() {
         this.instance = express();
+
+        this.instance.use(sessions(
+            {
+                cookieName: 'session',
+                secret: properties.COOKIE_SECRET,
+                duration: parseInt(properties.COOKIE_DURATION, 10),
+                activeDuration: parseInt(properties.COOKIE_ACTIVE_DURATION, 10),
+                cookie: {
+                    path: '/api',
+                    httpOnly: true,
+                    secure: properties.COOKIE_SECURE_SETTING
+                }
+            }
+        ));
+
+        this.instance.use(this.passport.initialize());
+
+        this.instance.use(morgan('combined', this.logger.getMorganOptions()));
+
+        useExpressServer(this.instance, {
+            routePrefix: '/api',
+            controllers: [
+                __dirname + '/controllers/*.js'
+            ],
+            middlewares: [
+                ErrorHandlerMiddleware,
+                AuthenticatedMiddleware
+            ],
+            defaultErrorHandler: false,
+            currentUserChecker: async (action: Action) => {
+                return await this.authService.getUserById(action.request.session.user.id);
+            }
+        });
+
+        // tslint:disable-next-line: no-unused-expression
+        !properties.PROD && OpenAPI.configure(this.instance);
     }
 
     public async start() {
-        // tslint:disable-next-line: no-unused-expression
-        await dbConnection() || this.throwAppError();
+        if (!this.instance) {
+            await this.initialize();
+        }
 
-        this.instance.use(PassportConfig.initialize());
-
-        this.instance.get('/auth/google', PassportConfig.getPassport().authenticate('google', { scope: ['profile', 'email'] }));
-        this.instance.get('/auth/google/callback', PassportConfig.getPassport().authenticate('google', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-            res.redirect('/');
+        this.instance.listen(properties.PORT, () => {
+            this.logger.writeInfo(`Server started at http://localhost:${properties.PORT}`);
         });
-
-        this.instance.get('/auth/github', PassportConfig.getPassport().authenticate('github'));
-        this.instance.get('/auth/github/callback', PassportConfig.getPassport().authenticate('github', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-            // Successful authentication, redirect home.
-            res.redirect('/');
-        });
-
-        this.instance.get('/', (req: Request, res: Response) => {
-            res.send('Hello world!');
-        });
-
-        this.instance.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-            res.status(500).send({ message: "A nasty error occurred" });
-        });
-
-        this.instance.listen(config.PORT, () => {
-            // tslint:disable-next-line:no-console
-            console.log(`Server started at http://localhost:${config.PORT}`);
-        });
-    }
-
-    throwAppError() {
-        throw new Error("an error happened");
     }
 }

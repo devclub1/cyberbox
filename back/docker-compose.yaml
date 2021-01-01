@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  db:
+    image: axbg/cyberbox-db
+    container_name: cyberbox-db
+    hostname: db
+    ports: 
+        - "3306:3306"
+    networks:
+      - app-network
+
+  cbox:
+    build: .
+    container_name: cbox
+    ports:
+      - "8080:8080"
+    env_file:
+      - ".env"
+    hostname: cbox
+    restart: always
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+networks:
+  app-network:
+    driver: bridge
