@@ -15,8 +15,8 @@ DatabaseConnection.getConnection()
         const app = Container.get(Application);
         app.start();
     })
-    .catch((error) => {
+    .catch((error: Error) => {
         const logger = Container.get(Logger);
-        logger.writeError(`${error.message as string} - ${error.stack as string}`);
+        logger.writeError(`${error.message} - ${error.stack}`);
         exit(-1);
     });

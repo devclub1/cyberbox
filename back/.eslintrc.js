@@ -19,8 +19,6 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-        "@typescript-eslint/no-unsafe-call": "off",
-        "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/adjacent-overload-signatures": "error",
         "@typescript-eslint/array-type": [
             "error",
@@ -189,7 +187,8 @@ module.exports = {
             "files": ["*Controller.ts"],
             "rules": {
                 "@typescript-eslint/explicit-module-boundary-types": "off",
-                "@typescript-eslint/no-empty-function": "off"
+                "@typescript-eslint/no-empty-function": "off",
+                "@typescript-eslint/no-unsafe-member-access": "off"
             }
         },
         {
@@ -197,7 +196,15 @@ module.exports = {
             "rules": {
                 "@typescript-eslint/no-unsafe-assignment": "off",
                 "@typescript-eslint/no-unsafe-return": "off",
-                "@typescript-eslint/explicit-module-boundary-types": "off"
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "@typescript-eslint/no-unsafe-member-access": "off",
+                "@typescript-eslint/no-unsafe-call": "off"
+            }
+        },
+        {
+            "files": ["*.test.ts"],
+            "rules": {
+                "@typescript-eslint/no-unsafe-member-access": "off"
             }
         }
     ]

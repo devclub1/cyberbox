@@ -23,6 +23,7 @@ export class GenericMock {
     updateInstance(...members: MockedMember[]): void {
         members.forEach(member => {
             member.implementation.mockClear();
+            /* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */
             this._instance[member.name] = member.implementation;
         });
     }

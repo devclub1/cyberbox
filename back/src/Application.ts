@@ -60,6 +60,7 @@ export class Application {
             ],
             defaultErrorHandler: false,
             currentUserChecker: async (action: Action) => {
+                /* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */
                 return await this.authService.getUserById(action.request.session.user.id);
             }
         });
