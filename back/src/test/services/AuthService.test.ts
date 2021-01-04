@@ -14,13 +14,13 @@ const mockedProfile = {
 };
 
 const mocks = {
-    findOneFound: MockedMember.generate('findOne', jest.fn(async (profile: any) => {
+    findOneFound: MockedMember.generate('findOne', jest.fn(() => {
         return mockedUser;
     })),
-    findOneNotFound: MockedMember.generate('findOne', jest.fn(async (profile: any) => {
+    findOneNotFound: MockedMember.generate('findOne', jest.fn(() => {
         return null;
     })),
-    save: MockedMember.generate('save', jest.fn(async (profile: any) => {
+    save: MockedMember.generate('save', jest.fn((profile: typeof mockedProfile) => {
         return { ...profile, uuid: mockedUuid };
     }))
 };

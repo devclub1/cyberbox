@@ -7,7 +7,7 @@ export default class GithubAuthenticationRedirectMiddleware implements ExpressMi
     @Inject()
     private passport: Passport;
 
-    use(request: any, response: any, next: (err?: any) => any) {
+    use(request: any, response: any, next: (err?: any) => any): any {
         return this.passport.getPassport().authenticate('github', { failureRedirect: '/login' },
             (err: any, user: any, info: any) => {
                 if (err || !user) {

@@ -1,17 +1,18 @@
+/* eslint max-classes-per-file: off */
 export class MockedMember {
     constructor(public name: string, public implementation: jest.Mock) {
     }
 
-    public static generate(name: string, implementation: jest.Mock) {
+    public static generate(name: string, implementation: jest.Mock): MockedMember {
         return new MockedMember(name, implementation);
     }
 }
 
-// tslint:disable-next-line: max-classes-per-file
 export class GenericMock {
     _instance: any = {};
 
     get instance(): any {
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-return */
         return this._instance;
     }
 
@@ -19,7 +20,7 @@ export class GenericMock {
         this.updateInstance(...members);
     }
 
-    updateInstance(...members: MockedMember[]) {
+    updateInstance(...members: MockedMember[]): void {
         members.forEach(member => {
             member.implementation.mockClear();
             this._instance[member.name] = member.implementation;

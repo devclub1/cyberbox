@@ -17,6 +17,6 @@ DatabaseConnection.getConnection()
     })
     .catch((error) => {
         const logger = Container.get(Logger);
-        logger.writeError(`${error.message} - ${error.stack}`);
+        logger.writeError(`${error.message as string} - ${error.stack as string}`);
         exit(-1);
     });

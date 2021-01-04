@@ -19,11 +19,11 @@ export default class Logger {
         });
     }
 
-    public writeInfo(message: string) {
+    public writeInfo(message: string): void {
         this.logger.info(message);
     }
 
-    public writeError(message: string, stacktrace?: string) {
+    public writeError(message: string, stacktrace?: string): void {
         this.logger.error(message + ' - ' + stacktrace);
     }
 
@@ -43,8 +43,9 @@ export default class Logger {
             this.initializeErrorTransport(),
         ];
 
-        // tslint:disable-next-line: no-unused-expression
-        !properties.PROD && this.transports.push(this.initializeConsoleTransport());
+        if(!properties.PROD) {
+            this.transports.push(this.initializeConsoleTransport());
+        }
     }
 
     private initializeAccessTransport(): winston.transport {
@@ -80,7 +81,7 @@ export default class Logger {
         );
     }
 
-    private removeErrors = winston.format((info, opts) => {
+    private removeErrors = winston.format((info) => {
         return info.level === 'error' ? false : info;
     });
 }

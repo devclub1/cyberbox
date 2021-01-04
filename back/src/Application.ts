@@ -28,7 +28,7 @@ export class Application {
         useContainer(Container);
     }
 
-    public async initialize() {
+    public initialize(): void {
         this.instance = express();
 
         this.instance.use(sessions(
@@ -64,13 +64,14 @@ export class Application {
             }
         });
 
-        // tslint:disable-next-line: no-unused-expression
-        !properties.PROD && OpenAPI.configure(this.instance);
+        if (!properties.PROD) {
+            OpenAPI.configure(this.instance);
+        }
     }
 
-    public async start() {
+    public start(): void {
         if (!this.instance) {
-            await this.initialize();
+            this.initialize();
         }
 
         this.instance.listen(properties.PORT, () => {

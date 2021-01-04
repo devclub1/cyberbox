@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unsafe-assignment: off */
+
 import { OAuth2Strategy } from 'passport-google-oauth';
 import { Strategy } from 'passport-github2';
 import properties from '../properties';
@@ -37,8 +39,8 @@ export default class Passport {
             clientID: properties.GOOGLE_CLIENT_ID,
             clientSecret: properties.GOOGLE_SECRET,
             callbackURL: properties.AUTHENTICATION_ROUTE + properties.GOOGLE_CALLBACK_URL,
-        }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
-            this.passportCallbackHandler(accessToken, refreshToken, profile, done);
+        }, (accessToken: any, refreshToken: any, profile: any, done: any): void => {
+            void this.passportCallbackHandler(accessToken, refreshToken, profile, done);
         }));
 
         this.instance.use(new Strategy({
@@ -46,13 +48,12 @@ export default class Passport {
             clientSecret: properties.GITHUB_CLIENT_SECRET,
             callbackURL: properties.AUTHENTICATION_ROUTE + properties.GITHUB_CALLBACK_URL,
             scope: ['user:email'],
-        }, (accessToken: any, refreshToken: any, profile: any, done: any) => {
-            this.passportCallbackHandler(accessToken, refreshToken, profile, done);
+        }, (accessToken: any, refreshToken: any, profile: any, done: any): void => {
+            void this.passportCallbackHandler(accessToken, refreshToken, profile, done);
         }));
     }
 
     private async passportCallbackHandler(_accessToken: any, _refreshToken: any, profile: any, done: any) {
-
         let name = [];
         if(profile._json.name !== null){
             name = profile._json.name.split(' ');
