@@ -16,7 +16,7 @@ export class WelcomeController {
     @UseBefore(AuthenticatedMiddleware)
     @OpenAPI({ security: [{ cookieAuth: [] }] })
     protectedWelcome(@CurrentUser() user: User) {
-        // tslint:disable-next-line:no-console
+        // eslint-disable-next-line no-console
         console.log(user.email);
         return { message: 'hit the protected get route' };
     }
@@ -26,8 +26,8 @@ export class WelcomeController {
     @UseBefore(AuthenticatedMiddleware)
     @OpenAPI({ security: [{ cookieAuth: [] }] })
     protectedWelcomePost(@CurrentUser() user: User, @Body() body: WelcomeSchema) {
-        // tslint:disable-next-line:no-console
-        console.log(user.email);
+        // eslint-disable-next-line no-console
+        console.log(user.email + ' - ' + body.name);
         return { message: 'hit the protected post route' };
     }
 }

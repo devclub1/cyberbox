@@ -37,21 +37,21 @@ export class File {
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
     updated: Date;
 
-    @OneToMany(type => Permission, permission => permission.file)
+    @OneToMany(() => Permission, permission => permission.file)
     permissions: Permission[];
 
-    @OneToMany(type => Log, log => log.file)
+    @OneToMany(() => Log, log => log.file)
     logs: Log[];
 
-    @OneToOne(type => File, { onDelete: 'CASCADE' })
+    @OneToOne(() => File, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'parent_uuid' })
     parent: File;
 
-    @ManyToOne(type => User, user => user.files, {onDelete: 'CASCADE'})
+    @ManyToOne(() => User, user => user.files, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'user_uuid' })
     user: User;
 
-    @ManyToOne(type => Group, group => group.files, {onDelete: 'CASCADE'})
+    @ManyToOne(() => Group, group => group.files, {onDelete: 'CASCADE'})
     @JoinColumn({ name: 'group_uuid' })
     group: Group;
 

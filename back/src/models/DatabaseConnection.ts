@@ -7,7 +7,7 @@ import properties from '../properties';
 export default class DatabaseConnection {
     private static connection: Connection = null;
 
-    public static async getConnection() {
+    public static async getConnection(): Promise<Connection> {
         if (!DatabaseConnection.connection) {
             DatabaseConnection.connection = await DatabaseConnection.establishConnection();
         }

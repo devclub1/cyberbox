@@ -10,12 +10,10 @@ export class AuthController {
 
     @Get('/google')
     @UseBefore(GoogleAuthenticationMiddleware)
-    // tslint:disable-next-line: no-empty
     authenticateGoogle() { }
 
     @Get('/github')
     @UseBefore(GithubAuthenticationMiddleware)
-    // tslint:disable-next-line: no-empty
     authenticateGithub() { }
 
     @Get('/google/callback')

@@ -7,7 +7,7 @@ export default class GoogleAuthenticationRedirectMiddleware implements ExpressMi
     @Inject()
     private passport: Passport;
 
-    use(request: any, response: any, next: (err?: any) => any) {
+    use(request: any, response: any, next: (err?: any) => any): any {
         return this.passport.getPassport().authenticate('google', { failureRedirect: '/login' },
             (err: any, user: any, info: any) => {
                 if (err || !user) {

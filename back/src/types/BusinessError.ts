@@ -1,5 +1,5 @@
 export default class BusinessError extends Error {
-    public shouldLog: boolean = false;
+    public shouldLog = false;
     public code: number;
 
     constructor(message: string, code: number, shouldLog?: boolean) {
