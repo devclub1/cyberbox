@@ -7,11 +7,9 @@ export default class AuthenticationRedirectMiddleware implements ExpressMiddlewa
     @Inject()
     private passport: Passport;
 
-    private stragety: string;
-
     use(request: any, response: any, next: (err?: any) => any): any {
-        this.stragety = request.route.path.split('/')[3];
-        return this.passport.getPassport().authenticate(this.stragety, { failureRedirect: '/login' },
+        const strategy = request.url.split('/')[3];
+        return this.passport.getPassport().authenticate(strategy, { failureRedirect: '/login' },
             (err: any, user: any, info: any) => {
                 if (err || !user) {
                     return next(new BusinessError(info, 401, false));

@@ -1,18 +1,17 @@
 import { Controller, Get, Req, Res, Session, UseBefore } from 'routing-controllers';
-import { GoogleAuthenticationMiddleware } from '../middlewares/GoogleAuthenticationMiddleware';
 import { Request, Response } from 'express';
-import { GithubAuthenticationMiddleware } from '../middlewares/GithubAuthenticationMiddleware';
 import AuthenticationRedirectMiddleware from '../middlewares/AuthenticationRedirectMiddleware';
+import { AuthenticationMiddleware } from '../middlewares/AuthenticationMiddleware';
 
 @Controller('/authentication')
 export class AuthController {
 
     @Get('/google')
-    @UseBefore(GoogleAuthenticationMiddleware)
+    @UseBefore(AuthenticationMiddleware)
     authenticateGoogle() { }
 
     @Get('/github')
-    @UseBefore(GithubAuthenticationMiddleware)
+    @UseBefore(AuthenticationMiddleware)
     authenticateGithub() { }
 
     @Get('/google/callback')
