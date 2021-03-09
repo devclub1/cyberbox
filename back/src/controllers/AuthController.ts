@@ -1,25 +1,21 @@
 import { Controller, Get, Req, Res, Session, UseBefore } from 'routing-controllers';
-import { GoogleAuthenticationMiddleware } from '../middlewares/GoogleAuthenticationMiddleware';
-import GoogleAuthenticationRedirectMiddleware from '../middlewares/GoogleAuthenticationRedirectMiddleware';
 import { Request, Response } from 'express';
-import { GithubAuthenticationMiddleware } from '../middlewares/GithubAuthenticationMiddleware';
-import GithubAuthenticationRedirectMiddleware from '../middlewares/GithubAuthenticationRedirectMiddleware';
+import AuthenticationRedirectMiddleware from '../middlewares/AuthenticationRedirectMiddleware';
+import { AuthenticationMiddleware } from '../middlewares/AuthenticationMiddleware';
 
 @Controller('/authentication')
 export class AuthController {
 
     @Get('/google')
-    @UseBefore(GoogleAuthenticationMiddleware)
-    // tslint:disable-next-line: no-empty
+    @UseBefore(AuthenticationMiddleware)
     authenticateGoogle() { }
 
     @Get('/github')
-    @UseBefore(GithubAuthenticationMiddleware)
-    // tslint:disable-next-line: no-empty
+    @UseBefore(AuthenticationMiddleware)
     authenticateGithub() { }
 
     @Get('/google/callback')
-    @UseBefore(GoogleAuthenticationRedirectMiddleware)
+    @UseBefore(AuthenticationRedirectMiddleware)
     authenticateGoogleCallback(@Req() req: Request, @Res() res: Response, @Session() session: any) {
         session.user = req.user;
         res.redirect('/api/protected');
@@ -29,7 +25,7 @@ export class AuthController {
     }
 
     @Get('/github/callback')
-    @UseBefore(GithubAuthenticationRedirectMiddleware)
+    @UseBefore(AuthenticationRedirectMiddleware)
     authenticateGithubCallback(@Req() req: Request, @Res() res: Response, @Session() session: any) {
         session.user = req.user;
         res.redirect('/api/protected');

@@ -1,12 +1,13 @@
 import { Service } from 'typedi';
 import UserRepository from '../repositories/UserRepository';
 import { InjectRepository } from 'typeorm-typedi-extensions';
+import { User } from '../models/User';
 
 @Service()
 export default class AuthService {
     constructor(@InjectRepository() private userRepository: UserRepository) { }
 
-    private formatUserData(profile: any): any {
+    private formatUserData(profile: { email: string; firstName: string; lastName: string }): typeof profile {
         // validate profile.name profile.email
         return {
             email: profile.email,
@@ -15,7 +16,7 @@ export default class AuthService {
         };
     }
 
-    public async getOrCreateUser(profile: any) {
+    public async getOrCreateUser(profile: { email: string; firstName: string; lastName: string }): Promise<{ uuid: string }> {
         let user = await this.userRepository.findOne({ email: profile.email });
 
         if (!user) {
@@ -25,7 +26,7 @@ export default class AuthService {
         return { uuid: user.uuid };
     }
 
-    public async getUserById(uuid: string) {
+    public async getUserById(uuid: string): Promise<User> {
         return this.userRepository.findOne(uuid);
     }
 }

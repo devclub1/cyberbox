@@ -17,9 +17,9 @@ export class Group {
     @Column({ type: 'longtext' })
     vault: string;
 
-    @OneToMany(type => File, file => file.group)
+    @OneToMany(() => File, file => file.group)
     files: File[];
 
-    @OneToMany(type => Membership, membership => membership.group)
+    @OneToMany(() => Membership, membership => membership.group)
     memberships: Membership[];
 }

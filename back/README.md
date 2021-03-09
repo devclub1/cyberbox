@@ -5,7 +5,8 @@
 ## Useful CLI commands
 * npm run build - build the application
 * npm start - build & start the application
-* npm t - run all the tests
+* npm run dev - build & restart the app on every change
+* npm test - run all the tests
 * npm run test-watch - run all the tests with verbose output
 * npm run coverage - create coverage report & update *coverage shield* in README.md 
 * npm run migrate MIGRATION_NAME_ - create a database migration 

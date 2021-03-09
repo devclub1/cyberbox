@@ -24,25 +24,25 @@ export class User {
     @Column({ type: 'text', nullable: true })
     vault: string;
 
-    @OneToMany(type => Setting, setting => setting.user)
+    @OneToMany(() => Setting, setting => setting.user)
     settings: Setting[];
 
-    @OneToMany(type => File, file => file.user)
+    @OneToMany(() => File, file => file.user)
     files: File[];
 
-    @OneToMany(type => Token, token => token.user)
+    @OneToMany(() => Token, token => token.user)
     tokens: Token[];
 
-    @OneToMany(type => Log, log => log.user)
+    @OneToMany(() => Log, log => log.user)
     logs: Log[];
 
-    @OneToMany(type => Permission, permission => permission.owner)
+    @OneToMany(() => Permission, permission => permission.owner)
     owners: Permission[];
 
-    @OneToMany(type => Permission, permission => permission.guest)
+    @OneToMany(() => Permission, permission => permission.guest)
     guests: Permission[];
 
-    @OneToMany(type => Membership, membership => membership.user)
+    @OneToMany(() => Membership, membership => membership.user)
     memberships: Membership[];
 
     constructor(firstName: string, lastName: string, email: string) {

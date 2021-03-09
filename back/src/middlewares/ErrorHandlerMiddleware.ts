@@ -9,10 +9,10 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
     @Inject()
     private logger: Logger;
 
-    error(error: any, request: any, response: any, next: (err?: any) => any): void {
+    error(error: any, request: any, response: any): void {
         if (error instanceof BusinessError) {
             if (error.shouldLog) {
-                this.logger.writeError(error.code + ' - ' + error.message, error.stack);
+                this.logger.writeError(`${error.code} -  ${error.message}`, error.stack);
             }
 
             response.status(error.code);

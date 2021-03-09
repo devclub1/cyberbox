@@ -6,7 +6,7 @@ import { getMetadataArgsStorage } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 
 export class OpenAPI {
-    public static configure(app: express.Application) {
+    public static configure(app: express.Application): void {
         const schemas = validationMetadatasToSchemas({
             refPointerPrefix: '#/components/schemas/',
         });
