@@ -134,7 +134,7 @@ module.exports = {
             {
                 "ignoreRegExpLiterals": false,
                 "ignoreStrings": false,
-                "ignorePattern": "^import |^export \\{(.*?)\\}",
+                "ignorePattern": "^import |^export \\{(.*?)\\}|(CREATE TABLE)|(ALTER TABLE)",
                 "code": 140
             }
         ],
