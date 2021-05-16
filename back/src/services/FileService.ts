@@ -4,8 +4,7 @@ import { File } from '../models/File';
 import FileRepository from '../repositories/FileRepository';
 import archiver from 'archiver';
 import { join } from 'path';
-import { ReadStream } from 'node:fs';
-import fs from 'fs';
+import fs, { ReadStream } from 'fs';
 
 interface ResponseFile {
     name: string
